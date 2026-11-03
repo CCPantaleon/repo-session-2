@@ -1,0 +1,14 @@
+# Version 3.0 acceptance checklist
+
+| Requested improvement | Implemented behavior | Validation / limits |
+| --- | --- | --- |
+| Separate bounded destination queues | Two waiting 8 MiB chunks per writer, plus active buffers; independent writer errors and backpressure | Blocked producer wakes on error; healthy writer continues; source-pipeline regression tests pass. Sustained slow destinations still constrain direct copying. |
+| Cascading | First destination fully verified before backup stage; fresh working-copy checks before every cascade | Original sample card removed after working verification; missing backup restored; cascade resumes without original. Changed working copy blocks backups. |
+| Per-destination success/failure and retry | Healthy destinations publish while failed/missing targets remain incomplete; resume rehashes healthy files and retries failed targets | Corruption isolation, absent/reconnected targets, invalid prefixes and partial publication tested. Queue retains per-destination status. |
+| Controlled concurrent sources | User-selectable limit 1–4, default 2; common-resource source groups run serially | Two independent simulated devices run concurrently; source grouping tested, including transitive shared hardware. |
+| Concurrent destination readback | Up to four readback workers per active source file; shared-resource locks serialize contending operations | Independent/shared scheduler concurrency tested; all destination SHA-256 comparison regressions pass. Physical-drive throughput unqualified. |
+| Shared physical-device/connection detection | Disk Arbitration whole-disk/container IDs plus IOKit physical-storage and USB ancestry where exposed | GUI detected the shared disk for all generated targets; fallback filesystem grouping tested. Not a full topology/bandwidth map, especially opaque storage. |
+| Per-drive progress and errors | Written/read-back bytes, average I/O rate, current phase, resource grouping and errors; persisted in queue | GUI cascading run showed separate verified states for all three destinations. Average I/O includes reads+writes, not raw copy speed. |
+| Standard manifests and standalone verification | Legacy MHL 1.1 and flat ASC MHL 2.0 export; read-only SHA-256/SHA-1/MD5/XXH64 comparisons | Exported ASC manifest passed official XSD; both formats round-trip; GUI standalone verification passed. Full ASC history chains, directory hashes, C4 and XXH3/XXH128 are explicitly unsupported. |
+
+All eight capabilities are implemented within the stated scope. This is not a claim of commercial field maturity or universal device/application interoperability. Real-card performance, forced physical disconnects, disk-full hardware and power-loss qualification remain outstanding. No real camera originals were imported during development.

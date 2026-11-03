@@ -1,0 +1,7 @@
+flowchart LR
+ subgraph Direct
+ A[Original source] --> B[Fan-out to bounded independent writers] --> C[Read back and verify each destination]
+ end
+ subgraph Cascade
+ D[Original source] --> E[Destination 1: working copy verified] --> F[Recheck identity, inventory and hashes] --> G[Backups read from working copy and verify]
+ end

@@ -1,0 +1,6 @@
+flowchart LR
+ A[Read and hash source while writing staged copies] --> B[Freeze source SHA-256 reference]
+ B --> C[Independently read back and verify destinations]
+ C --> D[Reread source and check reference]
+ D --> E[Publish with conflict protection]
+ A -.-> F[Resume: rehash existing files and validate partial prefixes]

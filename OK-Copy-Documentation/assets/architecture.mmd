@@ -1,0 +1,7 @@
+flowchart LR
+ A[Select sources, destinations, layout and options] --> B[Safety checks, queue and storage scheduling]
+ B --> C[Read and hash source while writing staged copies]
+ C --> D[Read back and verify each destination]
+ D --> E[Reread source for integrity]
+ E --> F[Publish per destination and write receipts]
+ C -.-> G[Persistent state and validated resume]
